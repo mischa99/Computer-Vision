@@ -7,6 +7,7 @@ Blatt 2.1 Aufgabe 2
 """
 import numpy as np
 from skimage.io import imread,imsave
+
 #Bild laden
 img=imread("./catG.png")
 

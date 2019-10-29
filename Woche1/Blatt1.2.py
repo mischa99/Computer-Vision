@@ -45,8 +45,8 @@ num5 = float(input("Eine Zahl bitte: "))
 def summary(num1, num2, num3, num4, num5):
     numlist=[num1, num2, num3, num4, num5]
     print(numlist)
-    print(min(numlist) , numlist.index(min(numlist)))
-    print(max(numlist) , numlist.index(max(numlist)))
+    print(min(numlist), numlist.index(min(numlist)))
+    print(max(numlist), numlist.index(max(numlist)))
     numlist.sort()
     print(numlist[2]) #Median sortierter Liste mit 5 Elementen am Index 1!
     ug = 0
@@ -73,9 +73,7 @@ def summary(num1, num2, num3, num4, num5):
     print("ganze Zahlen " + str(ganzeZahl))
     print("reelle Zahlen ohne ganze Zahlen " + str(keineGanzeZahl))
     
-    
 print(summary(num1, num2, num3, num4, num5))
-
 
 #Aufgabe 4
 price = float(input("Was kostet das Essen: "))  

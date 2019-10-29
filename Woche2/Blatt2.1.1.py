@@ -8,12 +8,10 @@ Blatt 2.1, ufgabe 1
 
 import numpy as np
 from skimage.io import imread,imsave
-#Bild laden
-img=imread("./catG.png")
-
-
 import matplotlib.pyplot as plt
 
+#Bild laden
+img=imread("./catG.png")
 plt.imshow(img, cmap="Greys_r")
 
 #Wieviel Pixel hat das Bild?

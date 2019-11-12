@@ -9,7 +9,7 @@ import numpy as np
 from skimage.measure import regionprops
 from skimage.filters import threshold_otsu
 
-####
+#### Operationen ------------------------------------------------------------------------
 def euk_diff(zahl1, zahl2):
     return np.sum((zahl1-zahl2)**2)**.5
 
@@ -31,12 +31,15 @@ def imgs_std(img_vector):
         vector.append(np.std(img_vector[t], axis = (0,1)))
     return vector
 
-def imgs_ecc(img_vector, Schwellenwert = 100):
+def imgs_ecc(img_vector):
     img_vector = imgs_to_grey(img_vector)
-    temp = []
-    for t in img_vector:
-        temp.append(t < Schwellenwert)
-    img_vector = temp 
+    otsu = []
+    for t in range(len(img_vector)):
+        otsu.append(threshold_otsu(img_vector[t]))
+    mask = []
+    for t in range(len(img_vector)):
+        mask.append(img_vector[t] < otsu[t])
+    img_vector = mask
     vector = []
     for t in range(len(img_vector)):
         vector.append(regionprops(img_vector[t].astype(np.int), coordinates= 'xy')[0].eccentricity)
@@ -71,6 +74,17 @@ def imgs_to_grey(img_vector):
        vector.append(t[:,:,0]/3 + t[:,:,1]/3 + t[:,:,2]/3)
     return vector
 
+
+
+
+
+
+
+
+
+
+
+### Funktionen zum berechen ---------------------------------------------------------------------
 
 def imgs_nearest_neighbor(tr_vector, vl_vector, typ = "mean", verfahren = "euk"):
     best = []

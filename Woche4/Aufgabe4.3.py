@@ -51,7 +51,6 @@ print(my.imgs_hitrate(trLabels, vlLabels,
 ## ich den Winkel bestimmt nach dem ich das Bild drehen soll 
 
 ## 4.3.4 ----------------------------------------------------------------------------------------
-## Das Maß Exzentrizität lässt sich verwenden indem man diesen Befehl verwendet:
 print(my.imgs_hitrate(trLabels, vlLabels, 
       my.imgs_nearest_neighbor(trImgs_bb,vlImgs_bb, typ = "ecc", verfahren = "euk")))
 

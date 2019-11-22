@@ -73,6 +73,22 @@ for x in arr:
     trLabels=np.where(trLabels==x,y,trLabels)
     vlLabels=np.where(vlLabels==x,y,vlLabels)
     y+=1
+    
+#Label zum umformatieren 
+Y_train = np_utils.to_categorical(trLabels, 3)
+Y_test = np_utils.to_categorical(vlLabels, 3)
+
+model = Sequential()
+model.add(Dense(8, activation='relu', name='fc1', input_shape=(6,)))
+model.add(Dense(8, activation='relu', name='fc2')) 
+model.add(Dense(3, activation='softmax')) 
+
+model.compile(loss='categorical_crossentropy',
+optimizer=SGD(lr=0.000005, momentum=0.9), metrics=['accuracy'])
+
+model.fit(tr_descriptors, Y_train, batch_size=1, epochs=500, verbose=1)
+
+score = model.evaluate(vl_descriptors, Y_test, verbose=1)
 
 
 ##### Bilder vergleichen -----------------------------------------

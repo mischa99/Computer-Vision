@@ -38,7 +38,7 @@ def zieheBilder(anzBilder):
     array([ 1, -1,  1, -1,  1,  1,  1, -1,  1, -1, -1,  1,  1, -1, -1,  1, -1,
         1, -1, -1])
     """
-    numSamples=int(anzBilder/2)
+    numSamples=anzBilder
     mean1 = [120,80]
     cov1 = [[180,0],[0,60]]
     x1_1,x1_2 = np.random.multivariate_normal(mean1,cov1,numSamples).T

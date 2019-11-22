@@ -12,16 +12,12 @@ Created on Wed Oct 30 14:51:30 2019
 @author: Jan
 """
 
-
-from skimage.io import imread, imsave
-import matplotlib.pyplot as plt
-
 #always do this before working with keras!
 import numpy as np
 np.random.seed(123)# um die Gewichte immer gleichzufaellig zu initialisieren
 
-from tensorflow import set_random_seed
-set_random_seed(123)# -''-
+import tensorflow as tf
+tf.random.set_seed(123)# -''-
 
 from keras.models import Sequential
 from keras.layers import Dense
@@ -89,17 +85,14 @@ optimizer=SGD(lr=0.000005, momentum=0.9), metrics=['accuracy'])
 model.fit(tr_descriptors, Y_train, batch_size=1, epochs=500, verbose=1)
 
 score = model.evaluate(vl_descriptors, Y_test, verbose=1)
+print(score)
+'''
+Die Ergebnisse sind kaum besser im vgl. zum Nächsten-Nachbar-Klassifikator:
+ bei Batch Size 1 , Epochen=500 -> 56,66%   (53% bei Nächster_Nachbar)
+ bei Batch Size 1 , Epochen=1000 -> 69,99% 
+ bei Batch Size 1 , Epochen=2000 -> 60,00% 
+ bei Batch Size 2 , Epochen=2000 -> 60,00% 
+ bei Batch Size 1 , Epochen=5000 -> % 
+ bei Batch Size 10 , Epochen=5000 -> 63,33% 
+'''
 
-
-##### Bilder vergleichen -----------------------------------------
-   
-best = list(range(0,30,1))
-for i in list(range(0,30,1)):
-        temp = abs(trmeans - vlmeans[i])
-        temp = np.mean(temp, axis = 1)
-        best[i]  = np.argmin(temp)
-   
-kate = trLabels[best]
-
-
-Hitrate = sum(kate == vlLabels)/len(kate)

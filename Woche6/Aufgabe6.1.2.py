@@ -17,16 +17,15 @@ import numpy as np
 np.random.seed(123)# um die Gewichte immer gleichzufaellig zu initialisieren
 
 import tensorflow as tf
-tf.random.set_seed(123)# -''-
+from tensorflow import set_random_seed
+#tf.random.set_seed(123)# -''-
+set_random_seed(123)
 
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.utils import np_utils
 from keras.optimizers import SGD
 
-
-
-## Change Direction
 
 data = np.load("trainingsDatenFarbe2.npz")
 data2 = np.load("validierungsDatenFarbe2.npz")
@@ -70,7 +69,7 @@ for x in arr:
     vlLabels=np.where(vlLabels==x,y,vlLabels)
     y+=1
     
-#Label zum umformatieren 
+# Label zum umformatieren 
 Y_train = np_utils.to_categorical(trLabels, 3)
 Y_test = np_utils.to_categorical(vlLabels, 3)
 
@@ -86,13 +85,15 @@ model.fit(tr_descriptors, Y_train, batch_size=1, epochs=500, verbose=1)
 
 score = model.evaluate(vl_descriptors, Y_test, verbose=1)
 print(score)
+
+
 '''
 Die Ergebnisse sind kaum besser im vgl. zum Nächsten-Nachbar-Klassifikator:
- bei Batch Size 1 , Epochen=500 -> 56,66%   (53% bei Nächster_Nachbar)
- bei Batch Size 1 , Epochen=1000 -> 69,99% 
- bei Batch Size 1 , Epochen=2000 -> 60,00% 
- bei Batch Size 2 , Epochen=2000 -> 60,00% 
- bei Batch Size 1 , Epochen=5000 -> % 
- bei Batch Size 10 , Epochen=5000 -> 63,33% 
+ bei Batch Size 1 , Epochen=500 -> 63,33% , loss -> 0,98  (53% bei Nächster_Nachbar)
+ bei Batch Size 1 , Epochen=1000 -> 63,33% ,loss -> 1,04
+ bei Batch Size 1 , Epochen=2000 -> 60,00% , loss -> 1,24
+ bei Batch Size 2 , Epochen=2000 -> 60,00% , loss -> 1,00
+ bei Batch Size 1 , Epochen=5000 -> 60,00% , loss -> 1,24
+ bei Batch Size 10 , Epochen=5000 -> 53,33% , loss -> 5,67
 '''
 

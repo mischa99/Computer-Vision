@@ -8,6 +8,7 @@ Created on Sun Nov 10 17:53:40 2019
 import numpy as np
 from skimage.measure import regionprops
 from skimage.filters import threshold_otsu
+import re
 
 #### Operationen ------------------------------------------------------------------------
 def euk_diff(zahl1, zahl2):
@@ -23,13 +24,13 @@ def imgs_means(img_vector):
     vector = []
     for t in range(len(img_vector)):
         vector.append(np.mean(img_vector[t], axis = (0,1)))
-    return vector
+    return np.array(vector)
 
 def imgs_std(img_vector):
     vector = []
     for t in range(len(img_vector)):
         vector.append(np.std(img_vector[t], axis = (0,1)))
-    return vector
+    return np.array(vector)
 
 def imgs_ecc(img_vector):
     img_vector = imgs_to_grey(img_vector)
@@ -190,3 +191,43 @@ def imgs_bb(trImgs, vlImgs, Schwellenwert = "otsu"):
         vlImgs_bb.append(vlImgs[t][props[0]:props[2],props[1]:props[3]])
     
     return trImgs_bb, vlImgs_bb
+
+
+
+def imgs_labels(label_list):
+    label_list_new = label_list    
+    for t in label_list:
+        if re.search("Apple",t):
+            label_list_new[label_list.index(t)] = 1
+        if re.search("Aubergine",t):
+            label_list_new[label_list.index(t)] = 2
+        if re.search("Banana",t):
+            label_list_new[label_list.index(t)] = 3
+        if re.search("Carrots",t):
+            label_list_new[label_list.index(t)] = 4
+        if re.search("Cucumber",t):
+            label_list_new[label_list.index(t)] = 5
+        if re.search("Ginger",t):
+            label_list_new[label_list.index(t)] = 6
+        if re.search("Lemon",t):
+            label_list_new[label_list.index(t)] = 7        
+        if re.search("Melon",t):
+            label_list_new[label_list.index(t)] = 8
+        if re.search("Orange",t):
+            label_list_new[label_list.index(t)] = 9
+        if re.search("Pear",t):
+            label_list_new[label_list.index(t)] = 10
+        if re.search("Pepper",t):
+            label_list_new[label_list.index(t)] = 11       
+        if re.search("Pineapple",t):
+            label_list_new[label_list.index(t)] = 12       
+        if re.search("Potato",t):
+            label_list_new[label_list.index(t)] = 13
+        if re.search("Tomato",t):
+            label_list_new[label_list.index(t)] = 14
+        if re.search("Zucchini",t):
+            label_list_new[label_list.index(t)] = 15
+        if re.search("Watermelon",t):
+            label_list_new[label_list.index(t)] = 16
+    return np.array(label_list_new)
+         

@@ -21,8 +21,19 @@ from keras import applications
 import os
 from skimage.io import imread
 
-DATADIR= 
-CATEGORIES = ["Apple", "Aubergine", "Banana", "Carrrot", "Cucumber", "Ginger", "Lemon", "Melon", "Orange", "Pear",
+#Lambda-Layer vor dem ersten CNN Layer für resize images 
+'''
+original_dim = (32, 32, 3)
+target_size = (64, 64)
+input = keras.layers.Input(original_dim)
+x = tf.keras.layers.Lambda(lambda image: tf.image.resize(image, target_size))(input)
+'''
+
+
+
+'''
+DATADIR = 
+CATEGORIES = ["Apple", "Aubergine", "Banana", "Carrots", "Cucumber", "Ginger", "Lemon", "Melon", "Orange", "Pear",
             "Pepper","Pineapple", "Potato", "Tomato", "Watermelon", "Zucchini"]
 
 for category in CATEGORIES:
@@ -33,3 +44,4 @@ for category in CATEGORIES:
         plt.show()
         break
     break
+'''

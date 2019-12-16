@@ -64,7 +64,7 @@ train_generator = train_datagen.flow_from_directory(
     directory="/informatik2/students/home/7dill/Desktop/CV/Project/GroceryStoreDataset-V6_CNN/train/",
     target_size=(256, 256),
     color_mode="rgb",
-    batch_size=32,
+    batch_size=16,
     class_mode="categorical",
     shuffle=True,
     
@@ -73,7 +73,7 @@ train_generator = train_datagen.flow_from_directory(
 val_generator = val_datagen.flow_from_directory(
         directory="/informatik2/students/home/7dill/Desktop/CV/Project/GroceryStoreDataset-V6_CNN/val/",
         target_size=(256, 256),
-        batch_size=32,
+        batch_size=16,
         class_mode='categorical',
         shuffle=True,
         seed=42
@@ -121,7 +121,7 @@ model.compile(loss='categorical_crossentropy',
 optimizer=SGD(lr=0.01, momentum=0.9), metrics=['accuracy'])
 
 #CNN trainieren
-model.fit_generator(train_generator,steps_per_epoch=2000, epochs=20, validation_data=val_generator,
+model.fit_generator(train_generator,steps_per_epoch=1000, epochs=20, validation_data=val_generator,
           verbose=1, callbacks=[EarlyStopping(monitor='valloss',min_delta=0, patience=3),
         ModelCheckpoint(filepath='/informatik2/students/home/7dill/Desktop/CV/Project/cnn1weights.h5', monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)])
 

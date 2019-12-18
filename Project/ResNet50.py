@@ -65,7 +65,7 @@ optimizer=SGD(lr=0.01, momentum=0.9), metrics=['accuracy'])
 
 model.fit_generator(train_generator, epochs=10, validation_data=val_generator,
           verbose=1, callbacks=[EarlyStopping(monitor='val_loss',min_delta=0, patience=3),
-        ModelCheckpoint(filepath='/informatik2/students/home/7dill/Desktop/CV/Project/cnn1weights.h5',
+        ModelCheckpoint(filepath='/informatik2/students/home/7dill/Desktop/CV/Project/ResNet50weights.h5',
          monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)])
 
 model.load_weights('ResNet50weights.h5', by_name=True)

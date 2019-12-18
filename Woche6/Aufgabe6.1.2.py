@@ -16,7 +16,7 @@ Created on Wed Oct 30 14:51:30 2019
 import numpy as np
 np.random.seed(123)# um die Gewichte immer gleichzufaellig zu initialisieren
 
-import tensorflow as tf
+#import tensorflow as tf
 from tensorflow import set_random_seed
 #tf.random.set_seed(123)# -''-
 set_random_seed(123)

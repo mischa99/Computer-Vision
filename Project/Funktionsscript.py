@@ -54,7 +54,7 @@ def imgs_hists(img_vector, bins = 8, withbins= False):
     else:
         for t in range(len(img_vector)):
             vector.append(np.histogram(img_vector[t], bins = bins, range = (0,256))[0])
-    return vector
+    return np.array(vector)
 
 
 def imgs_hists_3d(img_vector, bins = 8, withbins= False):
@@ -67,7 +67,7 @@ def imgs_hists_3d(img_vector, bins = 8, withbins= False):
         for t in range(len(img_vector)):
             img = img_vector[t].reshape((img_vector[t].shape[0]* img_vector[t].shape[1],3))
             vector.append(np.histogramdd(img, bins = [bins,bins,bins], range = ((0,256),(0,256),(0,256)))[0])
-    return vector
+    return np.array(vector)
 
 def imgs_to_grey(img_vector):
     vector = []

@@ -5,13 +5,7 @@ Created on Wed Nov 20 15:49:52 2019
 
 @author: mikhail
 """
-import bilderGenerator as bG
-import numpy as np
-from skimage.io import imread, imsave
-from skimage.filters import sobel_h, sobel_v, threshold_otsu, gaussian
-#import Funktionsscript as my
-from skimage.measure import regionprops
-import matplotlib.pyplot as plt
+a
 
 #1.1
 tr_mws, tr_stds, tr_labels = bG.zieheBilder(250)

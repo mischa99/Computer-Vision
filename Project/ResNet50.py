@@ -55,16 +55,16 @@ for layer in model.layers:
 x = model.output
 x = GlobalAveragePooling2D()(x)
 x = Dropout(0.2)(x)
-fc1 = Dense(256, activation='relu')(x)
-fc2 = Dense(256, activation='relu')(fc1)
+fc1 = Dense(128, activation='relu')(x)
+fc2 = Dense(128, activation='relu')(fc1)
 predictions = Dense (16, activation= 'softmax')(fc2)
 model = Model(inputs = model.input, outputs = predictions)
 
 model.compile(loss='categorical_crossentropy',
 optimizer=SGD(lr=0.01, momentum=0.9), metrics=['accuracy'])
 
-model.fit_generator(train_generator, epochs=10, validation_data=val_generator,
-          verbose=1, callbacks=[EarlyStopping(monitor='val_loss',min_delta=0, patience=3),
+model.fit_generator(train_generator, epochs=50, validation_data=val_generator,
+          verbose=1, callbacks=[EarlyStopping(monitor='loss',min_delta=0, patience=3),
         ModelCheckpoint(filepath='/informatik2/students/home/7dill/Desktop/CV/Project/ResNet50weights.h5',
          monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)])
 
@@ -73,3 +73,18 @@ val_loss, val_acc = model.evaluate_generator(val_generator,
  callbacks=None, max_queue_size=10, use_multiprocessing=False, verbose=1)
 
 print(val_loss, val_acc)
+
+
+
+'''
+Test 1
+fc1 - 1x64, monitor='loss', epochs=10, 5%
+
+Test 2 
+fc1 - 128,fc2 - 64 monitor='loss', epochs=17/50, 9% 
+
+Test 3
+fc1 - 128,fc2 - 128 monitor='loss', epochs=/50, 
+
+
+'''

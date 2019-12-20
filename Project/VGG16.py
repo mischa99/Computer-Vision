@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 18 15:14:49 2019
-
 @author: 7dill
 """
 
@@ -10,7 +9,6 @@ Created on Wed Dec 18 15:14:49 2019
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 11 15:00:30 2019
-
 @author: 7dill
 """
 from keras.models import Sequential, Model
@@ -73,21 +71,21 @@ for layer in model.layers:
 	layer.trainable = False
 
 # add new classifier layers
-#x = GlobalAveragePooling2D()(model.output)
-flat1 = Flatten()(model.output)
-fc1 = Dense(256, activation='relu')(flat1)
-fc2 = Dense(256, activation='relu')(fc1)
-output = Dense(16, activation='softmax')(fc2)
+pool1= GlobalAveragePooling2D()(model.output)
+#flat1 = Flatten()(model.output)
+fc1 = Dense(128, activation='relu')(pool1)
+#fc2 = Dense(256, activation='relu')(fc1)
+output = Dense(16, activation='softmax')(fc1)
 # define new model
 model = Model(inputs=model.inputs, outputs=output)
 
 #CNN komplieren
 model.compile(loss='categorical_crossentropy',
-optimizer=SGD(lr=0.01, momentum=0.9), metrics=['accuracy'])
+optimizer=SGD(lr=0.001, momentum=0.9), metrics=['accuracy'])
 
 #CNN trainieren
-model.fit_generator(train_generator, epochs=10, validation_data=val_generator,
-          verbose=1, callbacks=[EarlyStopping(monitor='val_loss',min_delta=0, patience=3),
+model.fit_generator(train_generator, epochs=50, validation_data=val_generator,
+          verbose=1, callbacks=[EarlyStopping(monitor='val_loss',min_delta=0, patience=15),
         ModelCheckpoint(filepath='/informatik2/students/home/7dill/Desktop/CV/Project/VGG16weights.h5', 
         monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=1)])
 

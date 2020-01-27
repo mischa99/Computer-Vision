@@ -34,7 +34,7 @@ Tensorboard Feature Plot and Compare different Models in one Graph
 1) Specify NAME Variable of current model
 2) Run model
 3) after training finished, the data is being add to a new file called "logs"
-4) To open the Board, after training, write (in the project dir): tensorboard --logdir=logs/
+4) To open the Board, after training, write in the terminal (at the project dir): tensorboard --logdir=logs/
 -> gives a link to open the Board
 '''
 

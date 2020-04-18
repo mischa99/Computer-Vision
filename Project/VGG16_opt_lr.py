@@ -3,28 +3,22 @@
 """
 Created on Wed Dec 18 15:14:49 2019
 
-@author: 7dill
+@author: Mikhail Raudin, Timm Dill
 """
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 11 15:00:30 2019
-
-@author: 7dill
-"""
 from matplotlib import pyplot as plt
 
 import random as rn
 import numpy as np
 import tensorflow as tf
+import time
 
 import keras.backend as K
 from keras.models import Sequential, Model, load_model
 from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout, Input,GlobalAveragePooling2D, BatchNormalization
 from keras.utils import np_utils, plot_model
-from keras.optimizers import SGD
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.optimizers import SGD, Adam
+from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 from keras.preprocessing.image import ImageDataGenerator
 from keras import applications
 
@@ -33,15 +27,16 @@ np.random.seed(123)
 tf.random.set_seed(123)
 rn.seed(123)
 
+FILEPATH_DATA="/informatik1/students/home/9raudin/Desktop/CV/Project/DataX3_Final"
+FILEPATH= "/informatik1/students/home/9raudin/Desktop/CV/Project/"
 
-FILEPATH_DATA="/informatik1/students/home/9raudin/Desktop/CV/Project/datasetx3"
-FILEPATH_WEIGHTS= "/informatik1/students/home/9raudin/Desktop/CV/Project/"
-weights_name="VGG16_xweights.h5"
+NAME="vgg16_256_03_256_02_Adam2-{}".format(int(time.time()))
 
-max_count=100 #try 100 random learning rates 
-lr_array=[[],[]]
+text_file = open(FILEPATH + "Adam_lr_final2.txt", "a")
+
+max_count=100 #try 100 random learning rates
 for count in range(max_count):
-  lr = 10**rn.uniform(-3,-6) #random search between 10^-3 and 10^-6
+  lr = 10**rn.uniform(-3,-5) #random search between 10^-3 and 10^-6
   print(count,"/",max_count) #show iteration number
 
   new_input=Input(shape=(224,224,3))
@@ -52,15 +47,17 @@ for count in range(max_count):
       layer.trainable = False
 
   # add new classifier layers
-  #x = GlobalAveragePooling2D()(model.output)
   flat1 = Flatten()(model.output)
-  fc1 = Dense(128, activation='relu')(flat1)
-  output = Dense (16, activation= 'softmax')(fc1)
+  fc1 = Dense(256, activation='relu')(flat1)
+  drop1 = Dropout(0.3)(fc1)
+  fc2 = Dense(256, activation='relu')(drop1)
+  drop2 = Dropout(0.2)(fc2)
+  output = Dense (16, activation= 'softmax')(drop2)
 
   # define new model
   model = Model(inputs=model.inputs, outputs=output)
-  
 
+    
   train_datagen = ImageDataGenerator(
         rescale=1./255
         )
@@ -83,37 +80,33 @@ for count in range(max_count):
   val_generator = val_datagen.flow_from_directory(
         directory= FILEPATH_DATA + "/val/",
         target_size=(224, 224),
+        color_mode="rgb",
         batch_size=8,
         class_mode='categorical',
         shuffle=True,
         )
 
-
-
   #CNN komplieren
   model.compile(loss='categorical_crossentropy',
-  optimizer=SGD(lr=lr, momentum=0.9), metrics=['accuracy'])
+  optimizer=Adam(learning_rate=lr, beta_1=0.9, beta_2=0.999, amsgrad=False), metrics=['accuracy'])
 
-
-    
+  tensorboard = TensorBoard(log_dir="logs/{}".format(NAME + "_" + str(lr)))
   #train CNN only for 5 epochs, enough to see if lr works or not
   model.fit_generator(train_generator, epochs=5, validation_data=val_generator,
-          verbose=0)
-          #callbacks=[EarlyStopping(monitor='val_loss',min_delta=0, patience=3)])
-        #ModelCheckpoint(filepath=FILEPATH_WEIGHTS + weights_name,
-      # monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=True, mode='auto', period=1)])
-
-    #model.load_weights(weights_name, by_name=True)
+          verbose=0, callbacks=[tensorboard])
 
   val_loss, val_acc = model.evaluate_generator(val_generator,
-  callbacks=None, max_queue_size=10, use_multiprocessing=False, verbose=1)
+  callbacks=None, max_queue_size=10, use_multiprocessing=False, verbose=0)
+  
+  #write each loops result in a text file
+  loop_nr = [str(count), "/", str(max_count) + "\n"]
+  results = ["val_acc:", str(val_acc),"lr:", str(lr) + "\n"]
+  text_file.writelines(loop_nr)
+  text_file.writelines(results)
 
-  print("val_acc:",val_acc,"lr:",K.eval(model.optimizer.lr), count,"/",max_count) #print learning rate and val_accuracy
+  print("val_acc:",val_acc,"lr:",lr, count,"/",max_count) #print learning rate and val_accuracy in terminal
     
-  lr_array[0].append(lr)
-  lr_array[1].append(val_acc)
+ 
+text_file.close()
 
-print(np.amax(lr_array,axis=0))
-print(np.where(lr_array=np.amax(lr_array,axis=0)))
-print(lr_array)
 

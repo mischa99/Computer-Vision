@@ -82,7 +82,7 @@ val_generator = val_datagen.flow_from_directory(
         shuffle=True,
         )
 
-model.load_weights("Weights-"+NAME+".h5", by_name=True) #load fc-layers weights to only train unfrozen vgg16 block
+model.load_weights(FILEPATH + "Weights-"+NAME+".h5", by_name=True) #load fc-layers weights to only train unfrozen vgg16 block
 
 #define some callbacks for training
 early_stopping  = EarlyStopping(monitor='val_loss',min_delta=0,patience=5)
@@ -95,7 +95,7 @@ tensorboard = TensorBoard(log_dir="logs/{}".format(NAME))
 history = model.fit_generator(train_generator, epochs=20, validation_data=val_generator, verbose=1,
         callbacks=[early_stopping,model_checkpoint,tensorboard])
     
-model.load_weights("Weights-"+NAME+".h5", by_name=True)
+model.load_weights(FILEPATH + "Weights-"+NAME+".h5", by_name=True)
 
 val_loss, val_acc = model.evaluate_generator(val_generator,
  callbacks=None, max_queue_size=10, use_multiprocessing=False, verbose=1)
